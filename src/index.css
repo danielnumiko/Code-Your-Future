@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Design System — Code Your Future
+   Fluid scale: 320px (min) → 1920px (max) — range: 1600px
+   Formula: clamp(min, calc(intercept + slope * 100vw), max)
+     slope     = (max − min) / 1600
+     intercept = min − slope × 320
+   Sources: Figma variable library (3 breakpoints) + Brand Guidelines
+   ============================================================ */
+
+:root {
+
+  /* ── Colours ─────────────────────────────────────────────────
+     Figma tokens + two retained brand colours (red, offwhite).
+     Orange (#f46a1b) replaced everywhere by brand red (#EE4344). */
+  --color-dark:     #0f172a; /* Figma: Primary BG               */
+  --color-black:    #231F20; /* Brand near-black (kept)         */
+  --color-red:      #EE4344; /* Brand red — CTAs, accents       */
+  --color-offwhite: #F2EFF0; /* Brand offwhite — light bg       */
+  --color-white:    #ffffff; /* Figma: Neutral                  */
+  --color-body:     #cbd5e1; /* Figma: Type/Body (on dark)      */
+  --color-heading:  #ffffff; /* Figma: Type/Heading             */
+  --color-border:   #334155; /* Figma: Primary Border           */
+
+  /* ── Fluid Type Scale ────────────────────────────────────────
+     min @ 320px → max @ 1920px                                 */
+
+  /* xs   13px → 14px  | slope 0.0625vw  | intercept 0.8rem    */
+  --text-xs:   clamp(0.8125rem, calc(0.8rem    + 0.0625vw), 0.875rem);
+
+  /* s    14px → 18px  | slope 0.25vw    | intercept 0.825rem  */
+  --text-s:    clamp(0.875rem,  calc(0.825rem  + 0.25vw),   1.125rem);
+
+  /* base 18px → 24px  | slope 0.375vw   | intercept 1.05rem   */
+  --text-base: clamp(1.125rem,  calc(1.05rem   + 0.375vw),  1.5rem);
+
+  /* H6   18px → 28px  | slope 0.625vw   | intercept 1rem      */
+  --text-h6:   clamp(1.125rem,  calc(1rem      + 0.625vw),  1.75rem);
+
+  /* H5   20px → 34px  | slope 0.875vw   | intercept 1.075rem  */
+  --text-h5:   clamp(1.25rem,   calc(1.075rem  + 0.875vw),  2.125rem);
+
+  /* H4   23px → 43px  | slope 1.25vw    | intercept 1.1875rem */
+  --text-h4:   clamp(1.4375rem, calc(1.1875rem + 1.25vw),   2.6875rem);
+
+  /* H2   29px → 67px  | slope 2.375vw   | intercept 1.3375rem */
+  --text-h2:   clamp(1.8125rem, calc(1.3375rem + 2.375vw),  4.1875rem);
+
+  /* ── Fluid Space Scale ───────────────────────────────────────
+     min @ 320px → max @ 1920px                                 */
+
+  /* 3xs   4px →   6px | slope 0.125vw   | intercept 3.6px     */
+  --space-3xs:           clamp(4px,  calc(3.6px   + 0.125vw),  6px);
+
+  /* 2xs   8px →  11px | slope 0.1875vw  | intercept 7.4px     */
+  --space-2xs:           clamp(8px,  calc(7.4px   + 0.1875vw), 11px);
+
+  /* xs   12px →  17px | slope 0.3125vw  | intercept 11px      */
+  --space-xs:            clamp(12px, calc(11px    + 0.3125vw), 17px);
+
+  /* s    16px →  22px | slope 0.375vw   | intercept 14.8px    */
+  --space-s:             clamp(16px, calc(14.8px  + 0.375vw),  22px);
+
+  /* m    24px →  33px | slope 0.5625vw  | intercept 22.2px    */
+  --space-m:             clamp(24px, calc(22.2px  + 0.5625vw), 33px);
+
+  /* l    32px →  44px | slope 0.75vw    | intercept 29.6px    */
+  --space-l:             clamp(32px, calc(29.6px  + 0.75vw),   44px);
+
+  /* xl   48px →  66px | slope 1.125vw   | intercept 44.4px    */
+  --space-xl:            clamp(48px, calc(44.4px  + 1.125vw),  66px);
+
+  /* 2xl  64px →  88px | slope 1.5vw     | intercept 59.2px    */
+  --space-2xl:           clamp(64px, calc(59.2px  + 1.5vw),    88px);
+
+  /* 3xl  80px → 110px | slope 1.875vw   | intercept 74px      */
+  --space-3xl:           clamp(80px, calc(74px    + 1.875vw),  110px);
+
+  /* margins 16px → 66px | slope 3.125vw | intercept 6px       */
+  --space-margins:       clamp(16px, calc(6px     + 3.125vw),  66px);
+
+  /* gutters 16px → 66px (same curve as margins)               */
+  --space-gutters:       clamp(16px, calc(6px     + 3.125vw),  66px);
+
+  /* slice  32px →  88px | slope 3.5vw   | intercept 20.8px    */
+  --space-slice:         clamp(32px, calc(20.8px  + 3.5vw),    88px);
+
+  /* slice-h 24px → 33px | slope 0.5625vw | intercept 22.2px   */
+  --space-slice-heading: clamp(24px, calc(22.2px  + 0.5625vw), 33px);
+
+  /* ── Component Tokens ────────────────────────────────────────*/
+  /* btn-h  48px → 66px (same curve as xl)                      */
+  --btn-height:          clamp(48px, calc(44.4px  + 1.125vw),  66px);
+
+  /* btn-r   3px →  6px | slope 0.1875vw | intercept 2.4px     */
+  --btn-radius:          clamp(3px,  calc(2.4px   + 0.1875vw), 6px);
+
+  --btn-border-width:    2px;
+
+  /* ── Layout ──────────────────────────────────────────────────*/
+  --viewport-max:        1920px;
+
+  /* ── Typography ──────────────────────────────────────────────*/
+  --font-raleway:        "Raleway", sans-serif;
+  --font-lato:           "Lato", sans-serif;
+}
+
+/* ── Carousel animation ──────────────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ── Base resets ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-raleway);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-black);
+  background-color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
