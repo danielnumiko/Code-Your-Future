@@ -174,7 +174,7 @@ function WatchButton({ onClick }) {
       onMouseLeave={leave}
       style={{
         position: 'relative', overflow: 'hidden', cursor: 'pointer',
-        fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 12,
+        fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 16,
         padding: '14px 24px', border: '2px solid #fff',
         background: '#fff', color: '#000',
         letterSpacing: '0.04em', textTransform: 'uppercase',
@@ -186,7 +186,7 @@ function WatchButton({ onClick }) {
         <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor" style={{ flexShrink: 0 }}>
           <path d="M0 0L10 6L0 12V0Z" />
         </svg>
-        Watch our video
+        Why study with us
       </span>
     </button>
   )
@@ -264,7 +264,7 @@ function stickyProgress() {
   useMotionValueEvent(mosaic, 'change', v => {
     const s = stickyProgress()
     setScaled(v >= s)
-    setFullyScaled(v >= 0.97)
+    setFullyScaled(easeSnappy(clamp((v - s) / (1 - s))) >= 0.97)
   })
 
   const playerReadyRef = useRef(false)
