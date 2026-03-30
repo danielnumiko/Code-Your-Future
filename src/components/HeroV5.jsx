@@ -324,10 +324,12 @@ function stickyProgress() {
         style={{ paddingBottom: '200px' }}
         onMouseEnter={() => {
           if (!videoRef.current) return
+          videoRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*')
           videoRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*')
         }}
         onMouseLeave={() => {
           if (!videoRef.current) return
+          videoRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*')
           videoRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*')
         }}
       >
@@ -367,18 +369,12 @@ function stickyProgress() {
                   <motion.iframe
                     key="youtube"
                     ref={videoRef}
-                    src={`https://www.youtube.com/embed/jz87O1kap7s?autoplay=0&mute=0&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&origin=${encodeURIComponent(window.location.origin)}`}
+                    src={`https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=1&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&origin=${encodeURIComponent(window.location.origin)}`}
                     className="absolute inset-0 w-full h-full"
                     style={{ border: 'none' }}
                     allow="autoplay; encrypted-media"
                     allowFullScreen
-                    onLoad={() => {
-                      setTimeout(() => {
-                        videoRef.current?.contentWindow.postMessage(
-                          JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
-                        )
-                      }, 300)
-                    }}
+                    onLoad={() => {}}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
