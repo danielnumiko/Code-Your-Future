@@ -403,7 +403,7 @@ function stickyProgress() {
             textAlign: 'center',
           }}>
             {/* Single centred tile above h1 */}
-            <div style={{ width: '5.5vw', height: '5.5vw', overflow: 'hidden', flexShrink: 0, position: 'relative', top: '0px', marginBottom: '100px' }}>
+            <div style={{ width: '5.5vw', height: '5.5vw', overflow: 'hidden', flexShrink: 0, position: 'relative', top: '100px', marginBottom: '200px' }}>
               <video src="/7969380-uhd_2160_3840_30fps.mp4" autoPlay muted loop playsInline preload="none"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
