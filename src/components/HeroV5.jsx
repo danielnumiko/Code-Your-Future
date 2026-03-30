@@ -178,6 +178,7 @@ function MuteButton({ muted, onClick }) {
         padding: '14px 24px', border: '2px solid rgba(255,255,255,0.4)',
         background: 'transparent', color: '#fff', marginTop: 16,
         letterSpacing: '0.04em', textTransform: 'uppercase',
+        display: 'block', alignSelf: 'center',
       }}
     >
       <span ref={shardRef} aria-hidden="true" style={{ position: 'absolute', inset: 0, background: '#7b5cf6', transform: 'translateY(-110%)', pointerEvents: 'none' }} />
