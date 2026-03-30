@@ -176,7 +176,7 @@ function WatchButton({ onClick }) {
         position: 'relative', overflow: 'hidden', cursor: 'pointer',
         fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 16,
         padding: '14px 24px', border: '2px solid #fff',
-        background: '#fff', color: '#000',
+        background: '#fff', color: '#000', whiteSpace: 'nowrap',
         display: 'flex', alignItems: 'center', gap: 8,
       }}
     >
