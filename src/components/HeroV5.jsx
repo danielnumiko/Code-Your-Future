@@ -118,7 +118,7 @@ function Tile({ item }) {
       viewport={{ once: true, margin: '-5%' }}
       transition={{ duration: 0.8, ease: 'easeOut' }}>
       {item.video ? (
-        <video src={item.video} autoPlay muted loop playsInline
+        <video src={item.video} autoPlay muted loop playsInline preload="none"
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
       ) : (
         <img src={item.src} alt={item.alt}
@@ -280,7 +280,7 @@ function stickyProgress() {
           }}>
             {/* Single centred tile above h1 */}
             <div style={{ width: '5.5vw', height: '5.5vw', overflow: 'hidden', flexShrink: 0, position: 'relative', top: '0px', marginBottom: '100px' }}>
-              <video src="/7969380-uhd_2160_3840_30fps.mp4" autoPlay muted loop playsInline
+              <video src="/7969380-uhd_2160_3840_30fps.mp4" autoPlay muted loop playsInline preload="none"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
             <TextRevealSegments
