@@ -174,7 +174,7 @@ function WatchButton({ onClick }) {
       onMouseLeave={leave}
       style={{
         position: 'relative', overflow: 'hidden', cursor: 'pointer',
-        fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 12,
+        fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 16,
         padding: '14px 24px', border: '2px solid #fff',
         background: '#fff', color: '#000',
         display: 'flex', alignItems: 'center', gap: 8,
@@ -253,6 +253,8 @@ function stickyProgress() {
     const colW   = (vw - 2 * margin - 2 * gap) / 3
     return -(1 - t) * (vh - colW) / 2
   })
+
+  const buttonScale = useTransform(tileScale, v => 1 / v)
 
   const tileAspect = useTransform(mosaic, v => {
     const s = stickyProgress()
@@ -477,20 +479,22 @@ function stickyProgress() {
                   }, 500)
                 }}
               />
+
+              {fullyScaled && !watching && (
+                <motion.div style={{
+                  position: 'absolute', top: '50%', left: '50%',
+                  x: '-50%', y: '-50%',
+                  scale: buttonScale,
+                  zIndex: 10,
+                }}>
+                  <WatchButton onClick={handleWatch} />
+                </motion.div>
+              )}
             </motion.div>
 
           </div>
 
         </div>
-
-        {/* Full-width overlay — centres button on viewport regardless of grid column */}
-        {fullyScaled && !watching && (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', zIndex: 10, pointerEvents: 'none' }}>
-            <div style={{ position: 'sticky', top: 'calc(50vh - 24px)', alignSelf: 'flex-start', pointerEvents: 'auto' }}>
-              <WatchButton onClick={handleWatch} />
-            </div>
-          </div>
-        )}
       </section>
 
     </div>
