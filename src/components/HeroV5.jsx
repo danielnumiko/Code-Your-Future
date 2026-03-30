@@ -436,7 +436,7 @@ function stickyProgress() {
       {/* ================================================================
           Section 2 — centred growing tile
           ================================================================ */}
-      <section ref={sectionRef} style={{ paddingBottom: '200px' }}>
+      <section ref={sectionRef} style={{ paddingBottom: '200px', position: 'relative' }}>
         <div className="max-w-viewport mx-auto"
           style={{
             display: 'grid',
@@ -479,14 +479,18 @@ function stickyProgress() {
               />
             </motion.div>
 
-            {fullyScaled && !watching && (
-              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-                <WatchButton onClick={handleWatch} />
-              </div>
-            )}
           </div>
 
         </div>
+
+        {/* Full-width overlay — centres button on viewport regardless of grid column */}
+        {fullyScaled && !watching && (
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', zIndex: 10, pointerEvents: 'none' }}>
+            <div style={{ position: 'sticky', top: 'calc(50vh - 24px)', alignSelf: 'flex-start', pointerEvents: 'auto' }}>
+              <WatchButton onClick={handleWatch} />
+            </div>
+          </div>
+        )}
       </section>
 
     </div>
