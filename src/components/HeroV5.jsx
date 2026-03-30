@@ -309,7 +309,7 @@ function stickyProgress() {
         if (entry.isIntersecting) {
           if (!watchingRef.current) playIfReady()
         } else {
-          if (!watchingRef.current) ytCmd(videoRef.current, 'pauseVideo')
+          ytCmd(videoRef.current, 'pauseVideo')
         }
       },
       { threshold: 0 }
