@@ -474,7 +474,7 @@ function stickyProgress() {
                   <motion.iframe
                     key="youtube"
                     ref={videoRef}
-                    src={`https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=1&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&fs=0&color=white&origin=${encodeURIComponent(window.location.origin)}`}
+                    src={`https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=1&loop=1&playlist=jz87O1kap7s&controls=0&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&fs=0&color=white&origin=${encodeURIComponent(window.location.origin)}`}
                     className="absolute inset-0 w-full h-full"
                     style={{ border: 'none' }}
                     allow="autoplay; encrypted-media"
