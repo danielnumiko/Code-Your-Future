@@ -136,9 +136,9 @@ const navBtn = {
   cursor: 'pointer', padding: 0, lineHeight: 1,
 }
 
-// ─── Mute button (ShardLink-style) ────────────────────────────────────────────
+// ─── Watch button (ShardLink-style overlay) ───────────────────────────────────
 
-function MuteButton({ muted, onClick }) {
+function WatchButton({ onClick }) {
   const btnRef   = useRef(null)
   const shardRef = useRef(null)
   const labelRef = useRef(null)
@@ -176,14 +176,13 @@ function MuteButton({ muted, onClick }) {
         position: 'relative', overflow: 'hidden', cursor: 'pointer',
         fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 12,
         padding: '14px 24px', border: '2px solid rgba(255,255,255,0.4)',
-        background: 'transparent', color: '#fff', marginTop: 16,
+        background: 'transparent', color: '#fff',
         letterSpacing: '0.04em', textTransform: 'uppercase',
-        display: 'block', alignSelf: 'center',
       }}
     >
       <span ref={shardRef} aria-hidden="true" style={{ position: 'absolute', inset: 0, background: '#7b5cf6', transform: 'translateY(-110%)', pointerEvents: 'none' }} />
       <span ref={labelRef} style={{ position: 'relative', zIndex: 10, transition: 'color 0.2s', color: '#fff' }}>
-        {muted ? 'Unmute' : 'Mute'}
+        Watch our video
       </span>
     </button>
   )
@@ -263,7 +262,8 @@ function stickyProgress() {
   })
 
   const playerReadyRef = useRef(false)
-  const [muted, setMuted] = useState(true)
+  const [watching, setWatching] = useState(false)
+  const watchingRef = useRef(false)
 
   function playIfReady() {
     if (!playerReadyRef.current || !inViewRef.current) return
@@ -286,7 +286,7 @@ function stickyProgress() {
     return () => window.removeEventListener('message', onMessage)
   }, [])
 
-  // Play/pause based on scroll visibility — only pause when fully out of view
+  // Play/pause based on scroll visibility — only when not in watch mode
   useEffect(() => {
     const el = sectionRef.current
     if (!el) return
@@ -294,10 +294,9 @@ function stickyProgress() {
       ([entry]) => {
         inViewRef.current = entry.isIntersecting
         if (entry.isIntersecting) {
-          playIfReady()
+          if (!watchingRef.current) playIfReady()
         } else {
-          ytCmd(videoRef.current, 'pauseVideo')
-          setMuted(true)
+          if (!watchingRef.current) ytCmd(videoRef.current, 'pauseVideo')
         }
       },
       { threshold: 0 }
@@ -306,15 +305,10 @@ function stickyProgress() {
     return () => observer.disconnect()
   }, [])
 
-  function toggleMute() {
-    if (muted) {
-      ytCmd(videoRef.current, 'unMute')
-      ytCmd(videoRef.current, 'setVolume', [100])
-      setMuted(false)
-    } else {
-      ytCmd(videoRef.current, 'mute')
-      setMuted(true)
-    }
+  function handleWatch() {
+    watchingRef.current = true
+    playerReadyRef.current = false
+    setWatching(true)
   }
 
   return (
@@ -471,37 +465,41 @@ function stickyProgress() {
                     transition={{ duration: 0.5 }}
                   />
                 ) : (
-                  <motion.iframe
-                    key="youtube"
-                    ref={videoRef}
-                    src={`https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=1&loop=1&playlist=jz87O1kap7s&controls=0&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&fs=0&color=white&origin=${encodeURIComponent(window.location.origin)}`}
-                    className="absolute inset-0 w-full h-full"
-                    style={{ border: 'none' }}
-                    allow="autoplay; encrypted-media"
-                    allowFullScreen
-                    onLoad={() => {
-                      // Ask YouTube to send onReady event so we know when to send commands
-                      setTimeout(() => {
-                        videoRef.current?.contentWindow?.postMessage(
-                          JSON.stringify({ event: 'listening' }),
-                          'https://www.youtube.com'
-                        )
-                      }, 500)
-                    }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  />
+                  <>
+                    <motion.iframe
+                      key={`youtube-${watching}`}
+                      ref={videoRef}
+                      src={watching
+                        ? `https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=0&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&color=white&origin=${encodeURIComponent(window.location.origin)}`
+                        : `https://www.youtube.com/embed/jz87O1kap7s?autoplay=1&mute=1&loop=1&playlist=jz87O1kap7s&controls=0&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&fs=0&color=white&origin=${encodeURIComponent(window.location.origin)}`
+                      }
+                      className="absolute inset-0 w-full h-full"
+                      style={{ border: 'none' }}
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
+                      onLoad={() => {
+                        setTimeout(() => {
+                          videoRef.current?.contentWindow?.postMessage(
+                            JSON.stringify({ event: 'listening' }),
+                            'https://www.youtube.com'
+                          )
+                        }, 500)
+                      }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                    {!watching && (
+                      <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 5 }}>
+                        <WatchButton onClick={handleWatch} />
+                      </div>
+                    )}
+                  </>
                 )}
               </AnimatePresence>
 
             </motion.div>
-
-            {/* Mute toggle — below video, ShardLink style */}
-            {scaled && (
-              <MuteButton muted={muted} onClick={toggleMute} />
-            )}
           </div>
 
         </div>
