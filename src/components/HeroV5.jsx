@@ -367,7 +367,7 @@ function stickyProgress() {
                   <motion.iframe
                     key="youtube"
                     ref={videoRef}
-                    src="https://www.youtube.com/embed/jz87O1kap7s?autoplay=0&mute=0&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1"
+                    src={`https://www.youtube.com/embed/jz87O1kap7s?autoplay=0&mute=0&loop=1&playlist=jz87O1kap7s&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&origin=${encodeURIComponent(window.location.origin)}`}
                     className="absolute inset-0 w-full h-full"
                     style={{ border: 'none' }}
                     allow="autoplay; encrypted-media"
