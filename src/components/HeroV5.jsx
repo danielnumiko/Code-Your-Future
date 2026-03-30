@@ -174,10 +174,9 @@ function WatchButton({ onClick }) {
       onMouseLeave={leave}
       style={{
         position: 'relative', overflow: 'hidden', cursor: 'pointer',
-        fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 16,
+        fontFamily: 'Raleway, sans-serif', fontWeight: 600, fontSize: 12,
         padding: '14px 24px', border: '2px solid #fff',
         background: '#fff', color: '#000',
-        letterSpacing: '0.04em', textTransform: 'uppercase',
         display: 'flex', alignItems: 'center', gap: 8,
       }}
     >
@@ -186,7 +185,7 @@ function WatchButton({ onClick }) {
         <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor" style={{ flexShrink: 0 }}>
           <path d="M0 0L10 6L0 12V0Z" />
         </svg>
-        Why study with us
+        why study with us
       </span>
     </button>
   )
