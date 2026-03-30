@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion'
 import { TextRevealSegments } from './FadeIn'
 import ShardLink from './ShardLink'
@@ -138,9 +138,18 @@ const navBtn = {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
+function ytCmd(iframe, func, args = []) {
+  iframe?.contentWindow?.postMessage(
+    JSON.stringify({ event: 'command', func, args }),
+    'https://www.youtube.com'
+  )
+}
+
 export default function HeroV5({ onSwitchConcept }) {
   const videoRef      = useRef(null)
+  const sectionRef    = useRef(null)
   const [scaled, setScaled] = useState(false)
+  const inViewRef     = useRef(false)
   const mosaicRef     = useRef(null)
   const { scrollYProgress: mosaic } = useScroll({
     target: mosaicRef,
@@ -199,6 +208,37 @@ function stickyProgress() {
     const s = stickyProgress()
     setScaled(v >= s)
   })
+
+  // Play with sound when section scrolls into view, pause when it leaves
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        inViewRef.current = entry.isIntersecting
+        if (entry.isIntersecting) {
+          ytCmd(videoRef.current, 'unMute')
+          ytCmd(videoRef.current, 'setVolume', [100])
+          ytCmd(videoRef.current, 'playVideo')
+        } else {
+          ytCmd(videoRef.current, 'mute')
+          ytCmd(videoRef.current, 'pauseVideo')
+        }
+      },
+      { threshold: 0.2 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // When iframe loads while section is already in view, start playing
+  function onVideoLoad() {
+    if (inViewRef.current) {
+      ytCmd(videoRef.current, 'unMute')
+      ytCmd(videoRef.current, 'setVolume', [100])
+      ytCmd(videoRef.current, 'playVideo')
+    }
+  }
 
   return (
     <div style={{ position: 'relative' }}>
@@ -320,20 +360,7 @@ function stickyProgress() {
       {/* ================================================================
           Section 2 — centred growing tile
           ================================================================ */}
-      <section
-        style={{ paddingBottom: '200px' }}
-        onMouseEnter={() => {
-          if (!videoRef.current) return
-          videoRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), 'https://www.youtube.com')
-          videoRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), 'https://www.youtube.com')
-          videoRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), 'https://www.youtube.com')
-        }}
-        onMouseLeave={() => {
-          if (!videoRef.current) return
-          videoRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), 'https://www.youtube.com')
-          videoRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), 'https://www.youtube.com')
-        }}
-      >
+      <section ref={sectionRef} style={{ paddingBottom: '200px' }}>
         <div className="max-w-viewport mx-auto"
           style={{
             display: 'grid',
@@ -375,7 +402,7 @@ function stickyProgress() {
                     style={{ border: 'none' }}
                     allow="autoplay; encrypted-media"
                     allowFullScreen
-                    onLoad={() => {}}
+                    onLoad={onVideoLoad}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
