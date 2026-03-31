@@ -83,9 +83,6 @@ export default function Footer() {
           <p className="font-raleway text-white/40 text-xs">
             © {new Date().getFullYear()} Code Your Future. Charity No. 1174929
           </p>
-          <a href="/donate" className="font-raleway font-bold text-white text-s hover:text-cyf-offwhite transition-colors">
-            Donate
-          </a>
         </div>
 
       </div>
