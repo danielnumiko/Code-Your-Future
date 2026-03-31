@@ -1,5 +1,4 @@
 import { DiamondMark } from './BrandAssets'
-import { TextRevealSegments } from './FadeIn'
 const RED = '#F94500'
 
 const footerSections = [
@@ -47,27 +46,7 @@ export default function Footer() {
 
         {/* Large CTA — top of footer */}
         <div className="flex-1 flex items-center py-2xl">
-          <h2 className="font-bebas text-white leading-none text-display">
-            <TextRevealSegments
-              as="span"
-              className="block"
-              onMount={true}
-              segments={[
-                { text: '<',  color: RED, absolute: 'left' },
-                { text: 'Code Your', color: 'white' },
-              ]}
-            />
-            <TextRevealSegments
-              as="span"
-              className="block"
-              onMount={true}
-              delay={0.15}
-              segments={[
-                { text: 'Future', color: 'white' },
-                { text: '/>', color: RED, absolute: 'right' },
-              ]}
-            />
-          </h2>
+          <img src="/Logo.svg" alt="Code Your Future" style={{ height: '10vw', maxHeight: 160, minHeight: 80, width: 'auto' }} />
         </div>
 
         {/* Nav columns */}
